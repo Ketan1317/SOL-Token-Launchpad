@@ -1,18 +1,22 @@
+
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import { NodeGlobalsPolyfillPlugin } from "@esbuild-plugins/node-globals-polyfill";
+import { nodePolyfills } from "vite-plugin-node-polyfills";
 
 export default defineConfig({
-  plugins: [react(), tailwindcss()],
+  plugins: [
+    react(),
+    tailwindcss(),
+    nodePolyfills(),
+  ],
+
   optimizeDeps: {
-    include: ['buffer'],
+    include: ["buffer"],
     esbuildOptions: {
-      alias: {
-        buffer: "buffer", // point to npm package instead of default externalized one
-      },
       define: {
-        global: "window",
+        global: "globalThis",
       },
       plugins: [
         NodeGlobalsPolyfillPlugin({
@@ -21,11 +25,7 @@ export default defineConfig({
       ],
     },
   },
-  build: {
-    rollupOptions: {
-      plugins: [rollupNodePolyFill()],
-    },
-  },
+
   define: {
     "process.env": {},
   },
