@@ -6,6 +6,7 @@ import { NodeGlobalsPolyfillPlugin } from "@esbuild-plugins/node-globals-polyfil
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   optimizeDeps: {
+    include: ['buffer'],
     esbuildOptions: {
       alias: {
         buffer: "buffer", // point to npm package instead of default externalized one
@@ -18,6 +19,11 @@ export default defineConfig({
           buffer: true,
         }),
       ],
+    },
+  },
+  build: {
+    rollupOptions: {
+      plugins: [rollupNodePolyFill()],
     },
   },
   define: {
